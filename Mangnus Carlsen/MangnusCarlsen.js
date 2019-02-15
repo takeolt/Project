@@ -497,23 +497,31 @@ function drawSimpleShoots() {
                             break;
                         }
                     }
-                    /*else if(bullet_location[a].bullet_name === "rook") {
-                        if(checkIfBulletHitAEnemy(bullet_location[a], enemy_array[temp])) {
+                    else if(bullet_location[a].bullet_name === "rook") {
+                        if(checkIfBulletHitAEnemy(bullet_location[a].information[0].x1, bullet_location[a].information
+                        [0].y1, rook.height, rook.width, enemy_array[temp].x, enemy_array[temp].y, knight_enemy.height
+                        , knight_enemy.width)) {
+                            bullet_location[0].information[0].x1 = cvs.width + 2;
                             score += 10;
-                            enemy_array.splice(temp,1);
-                            enemy_amount--;
-                            if(bullet_location[a].information[0].x1 >= cvs.width && bullet_location[a].information[0].x2
-                            <= 0) {
-                                bullet_location.splice(a, 1);
-                                shoot_counter--;
-                            }
-                            bullet_hit_enemy = true;
                             play_promise = scor.play();
-                            play_promise.catch(function (error) { console.log(error.message)});
+                            play_promise.catch(function (error) { console.log(error.message) });
+                            enemy_array.splice(temp, 1);
+                            enemy_amount--;
                             break;
-
                         }
-                    }*/
+                        else if(checkIfBulletHitAEnemy(bullet_location[a].information[0].x2, bullet_location[a].information
+                                [0].y2, rook.height, rook.width, enemy_array[temp].x, enemy_array[temp].y, knight_enemy.height
+                            , knight_enemy.width)) {
+
+                            bullet_location[0].information[0].x1 = -1;
+                            score += 10;
+                            play_promise = scor.play();
+                            play_promise.catch(function (error) { console.log(error.message) });
+                            enemy_array.splice(temp, 1);
+                            enemy_amount--;
+                            break;
+                        }
+                    }
                     temp++;
                 }
                 if(bullet_hit_enemy){
