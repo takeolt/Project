@@ -219,14 +219,9 @@ function checkIfMainFigureHitTheFigure(x , y, figure_width, figure_height) {
         >= y;
 }
 
-function checkIfBulletHitAEnemy(bullet_type, enemy_type) {
-    if(bullet_type.bullet_name === "pawn") {
-        if(enemy_type.enemy_pic_name === "knight") {
-            return bullet_type.information[0].x + pawn.width >= enemy_type.x && bullet_type.information[0].x <=
-            enemy_type.x + knight_enemy.width && bullet_type.information[0].y <= enemy_type.y + knight_enemy.height
-            && bullet_type.information[0].y + pawn.height >= enemy_type.y;
-        }
-    }
+function checkIfBulletHitAEnemy(x1, y1 , fig_height, fig_width, x2, y2, en_height, en_width) {
+
+    return x1 + fig_height >= x2 && x1 <= x2 + en_width && y1 <= y2 + en_height && y1 + fig_height >= y2;
 }
 
 function makeSpecialBullet(){
@@ -485,16 +480,40 @@ function drawSimpleShoots() {
 
        if(enemy_array.length > 0) {
             var temp = 0;
+            var play_promise;
                 while (temp < enemy_array.length) {
-                    if(checkIfBulletHitAEnemy(bullet_location[a], enemy_array[temp])){
-                        score += 10;
-                        enemy_array.splice(temp, 1);
-                        enemy_amount--;
-                        bullet_location.splice(a, 1);
-                        shoot_counter--;
-                        bullet_hit_enemy = true;
-                        break;
+                    if(bullet_location[a].bullet_name === "pawn") {
+                        if(checkIfBulletHitAEnemy(bullet_location[a].information[0].x,
+                            bullet_location[a].information[0].y, pawn.height, pawn.width, enemy_array[temp].x,
+                            enemy_array[temp].y, knight_enemy.height, knight_enemy.width)){
+                            score += 10;
+                            enemy_array.splice(temp, 1);
+                            enemy_amount--;
+                            bullet_location.splice(a, 1);
+                            shoot_counter--;
+                            bullet_hit_enemy = true;
+                            play_promise = scor.play();
+                            play_promise.catch(function (error) { console.log(error.message)});
+                            break;
+                        }
                     }
+                    /*else if(bullet_location[a].bullet_name === "rook") {
+                        if(checkIfBulletHitAEnemy(bullet_location[a], enemy_array[temp])) {
+                            score += 10;
+                            enemy_array.splice(temp,1);
+                            enemy_amount--;
+                            if(bullet_location[a].information[0].x1 >= cvs.width && bullet_location[a].information[0].x2
+                            <= 0) {
+                                bullet_location.splice(a, 1);
+                                shoot_counter--;
+                            }
+                            bullet_hit_enemy = true;
+                            play_promise = scor.play();
+                            play_promise.catch(function (error) { console.log(error.message)});
+                            break;
+
+                        }
+                    }*/
                     temp++;
                 }
                 if(bullet_hit_enemy){
