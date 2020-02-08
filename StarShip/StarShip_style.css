@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: max-content;
+    height: max-content;
+}
+
+.button{
+    position: absolute;
+    border: none;
+    text-decoration-style: double;
+    display: inline-block;
+    font-size: 50px;
+    margin: 4px, 2px;
+    left: 780px;
+    top: 300px
+}
+
+body {
+    background-image: url("picture/background1.jpg");
+}
