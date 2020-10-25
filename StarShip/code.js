@@ -23,6 +23,10 @@ var mouse_y = 0;
 var test_p = new Image();
 var monster_type_1 = new Image();
 
+/* --> Define Images*/
+
+monster_type_1.src = "picture/monster_type_1.png";
+
 // Arrays
 
 var bullets = [];
@@ -92,7 +96,6 @@ function resizeCanvas() {
     background.src = "picture/background1.jpg";
     simple_bullet.src = "picture/bullet_model_1.jpg";
     test_p.src = "picture/temp.jpg";
-    monster_type_1.src = "picture/monster_type_1.png";
 }
 
 function mouseMoveEffect(events) {
@@ -148,16 +151,16 @@ function drawBullets() {
 
 function SpawnEnemies() {
 
-    if(level1) {
-        var tempY = Math.floor(Math.random() * cvs.height);
+    if(level1 && enemy_array.length < 1) {
+        var tempY = 500;
+        console.log("Cvs height is: " + cvs.height);
+        console.log("Moster height is: " + monster_type_1.height);
+        console.log("Monster width is: " + monster_type_1.width);
         var size = enemy_array.length;
 
-        if(tempY + monster_type_1.height > cvs.height) {
-            tempY -= monster_type_1.height;
-        }
-
-        if(tempY < monster_type_1.height ) {
-            tempY += monster_type_1.height;
+        if(tempY + monster_type_1.height >= cvs.height) {
+            console.log("this test work");
+            tempY = cvs.height - monster_type_1.height;
         }
 
         enemy_array[size] = {
@@ -167,6 +170,8 @@ function SpawnEnemies() {
             y : tempY
         }
     }
+
+    console.log("info in enemy" + enemy_array[0].level + " type? " + enemy_array[0].type.width);
     
 
     if(game_Start) {
@@ -184,24 +189,25 @@ function drawEnemies() {
             if(enemy_array[i].level.localeCompare("level_1") != 0) {   
                 break;
             }
-
             ctx.drawImage(enemy_array[i].type, enemy_array[i].x, enemy_array[i].y);
             enemy_array[i].x -= 3;
         }
     }
 
-    if(enemy_array[0].x == 0){
-        enemy_array.slice(1,0);
+    if(enemy_array[0].x + enemy_array[0].width <= 0){
+        enemy_array.shift(0,1);
     } 
 }
 
 function checkForBulletContact() {
+
+
     for(i = 0; i < bullets.length; i++) {
         for(a = 0; a < enemy_array.length; a++) {
-            if(bullets[i].x + bullets[i].type.width >= enemy_array[a].x && bullets[i].x <= enemy_array[a].x + enemy_array[a].type.width
-                && bullets[i].y - bullets[i].type.height <= enemy_array[a].y && bullets[i].y + 1 >= enemy_array[a].y - enemy_array[a].type.height) {
-                    enemy_array.slice(1,a);
-                    console.log("Hit");
+            if(bullets[i].x + bullets[i].type.width >= enemy_array[a].x && bullets[i].x <= enemy_array[a].x + enemy_array[a].type.width 
+                && bullets[i].y <= enemy_array[a].y && bullets[i].y >= enemy_array[a].y - enemy_array[a].type.height) {
+                    console.log(enemy_array.length + " left of enemy");
+                    console.log("Hit " + a);
             }
         }
     }
