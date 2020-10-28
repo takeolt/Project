@@ -12,20 +12,18 @@ document.addEventListener("click", mouseClickEffect)
 
 // Variables
 
-/* --> Images */
-var ship = new Image();
-var background = new Image();
-var simple_bullet = new Image();
 var back_Ground_Width;
 var back_Ground_Heigh;
 var mouse_x = 0;
 var mouse_y = 0;
-var test_p = new Image();
-var monster_type_1 = new Image();
+
+/* --> Images */
+var ship = new Image(40, 40);
+var background = new Image();
+var simple_bullet = new Image(4, 4);
+var monster_type_1 = new Image(32, 48);
 
 /* --> Define Images*/
-
-monster_type_1.src = "picture/monster_type_1.png";
 
 // Arrays
 
@@ -40,6 +38,7 @@ var level2 = false;
 var level1 = true;
 var spawn_Enemy = true;
 var timer_out_draw_enemy = true;
+var first_round = true;
 
 // functions
 
@@ -47,19 +46,20 @@ function start() {
 
     resizeCanvas();
 
+   
     if(mouse_x + ship.width >= cvs.width) {
         mouse_x = cvs.width - ship.width;
     }
+
     if(mouse_y + ship.height >= cvs.height) {
         mouse_y = cvs.height - ship.height;
     }
 
     ctx.drawImage(background, 0, 0, back_Ground_Width, back_Ground_Heigh);
     ctx.drawImage(ship, mouse_x, mouse_y);
-    //ctx.drawImage(test_p, mouse_x, mouse_y);
 
     checkForBulletContact();
-    
+        
     if(timer_out_draw_enemy && level1) {
         SpawnEnemies();
         timer_out_draw_enemy = false;
@@ -67,10 +67,10 @@ function start() {
     }
 
     if(timer_out_draw_enemy && level2) {
-        
+            
     }
 
-   if(enemy_array.length > 0) {
+    if(enemy_array.length > 0) {
         drawEnemies();
     }
 
@@ -95,7 +95,7 @@ function resizeCanvas() {
     ship.src = "picture/spaceship_model_1.png";
     background.src = "picture/background1.jpg";
     simple_bullet.src = "picture/bullet_model_1.jpg";
-    test_p.src = "picture/temp.jpg";
+    monster_type_1.src = "picture/monster_type_1.png";
 }
 
 function mouseMoveEffect(events) {
@@ -127,6 +127,8 @@ function mouseClickEffect(events) {
         y : mouse_y + 28
     }
     shoot_AnimationOn = true;
+    console.log("x value: " + mouse_x);
+    console.log("y value: " + mouse_y);
 }
 
 
@@ -134,7 +136,6 @@ function drawBullets() {
 
     for(i = 0; i < bullets.length; i++) {
         
-      
         ctx.drawImage(simple_bullet, bullets[i].x, bullets[i].y);
         
         bullets[i].x += 5;
@@ -152,14 +153,11 @@ function drawBullets() {
 function SpawnEnemies() {
 
     if(level1 && enemy_array.length < 1) {
-        var tempY = 500;
-        console.log("Cvs height is: " + cvs.height);
-        console.log("Moster height is: " + monster_type_1.height);
-        console.log("Monster width is: " + monster_type_1.width);
+        var tempY = Math.random() * (cvs.height - 0) + 0;
         var size = enemy_array.length;
+        
 
         if(tempY + monster_type_1.height >= cvs.height) {
-            console.log("this test work");
             tempY = cvs.height - monster_type_1.height;
         }
 
@@ -170,10 +168,7 @@ function SpawnEnemies() {
             y : tempY
         }
     }
-
-    console.log("info in enemy" + enemy_array[0].level + " type? " + enemy_array[0].type.width);
     
-
     if(game_Start) {
         game_Start = false;
         setTimeout(function(){level1 = false; level2 = true;}, (100*1000));
@@ -194,7 +189,7 @@ function drawEnemies() {
         }
     }
 
-    if(enemy_array[0].x + enemy_array[0].width <= 0){
+    if(enemy_array[0].x + enemy_array[0].type.width <= 0){
         enemy_array.shift(0,1);
     } 
 }
