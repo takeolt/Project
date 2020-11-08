@@ -1,6 +1,6 @@
 * {
     margin: 0;
-    padding: 0;
+    padding-left: 0px;
 }
 
 html, body {
@@ -19,6 +19,5 @@ html, body {
     top: 300px
 }
 
-body {
-    background-image: url("picture/background1.jpg");
-}
+
+

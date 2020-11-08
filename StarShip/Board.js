@@ -18,7 +18,6 @@ var mouse_x = 0;
 var mouse_y = 0;
 
 /* --> Images */
-var ship = new Image(40, 40);
 var background = new Image();
 var simple_bullet = new Image(4, 4);
 var monster_type_1 = new Image(32, 48);
@@ -43,20 +42,14 @@ var first_round = true;
 // functions
 
 function start() {
-
+    console.log("Size of ship is: " + ship.width + ", " + ship.height);
     resizeCanvas();
 
-   
-    if(mouse_x + ship.width >= cvs.width) {
-        mouse_x = cvs.width - ship.width;
-    }
-
-    if(mouse_y + ship.height >= cvs.height) {
-        mouse_y = cvs.height - ship.height;
-    }
+    //spaceship.js
+    borderCheck();
 
     ctx.drawImage(background, 0, 0, back_Ground_Width, back_Ground_Heigh);
-    ctx.drawImage(ship, mouse_x, mouse_y);
+    ctx.drawImage(ship, mouse_x, mouse_y, ship.width, ship.height);
 
     checkForBulletContact();
         
@@ -87,10 +80,22 @@ function start() {
 
 function resizeCanvas() {
 
-    back_Ground_Width = window.innerWidth;
     back_Ground_Heigh = window.innerHeight;
-    cvs.width = window.innerWidth;
     cvs.height = window.innerHeight;
+    back_Ground_Width = window.innerWidth;
+    cvs.width = window.innerWidth;
+ 
+
+    if(back_Ground_Width < 1000) {
+        ship = reSizeShipWidth(back_Ground_Width);
+        //reSizeEnemy(back_Ground_Heigh, back_Ground_Width)
+        
+    }
+
+    if(back_Ground_Heigh < 600) {
+        ship = reSizeShipHeigh(back_Ground_Heigh);
+    }
+    
 
     ship.src = "picture/spaceship_model_1.png";
     background.src = "picture/background1.jpg";
