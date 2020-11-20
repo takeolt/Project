@@ -35,3 +35,11 @@ function reSizeShipWidth(back_Ground_Width) {
 
     return ship
 }
+
+function shipOriginalHeight() {
+    return new Image(width, 40);
+}
+
+function shipOriginalWidth() {
+    return new Image(40, heigh);
+}

@@ -45,7 +45,6 @@ function start() {
     console.log("Size of ship is: " + ship.width + ", " + ship.height);
     resizeCanvas();
 
-    //spaceship.js
     borderCheck();
 
     ctx.drawImage(background, 0, 0, back_Ground_Width, back_Ground_Heigh);
@@ -95,7 +94,15 @@ function resizeCanvas() {
     if(back_Ground_Heigh < 600) {
         ship = reSizeShipHeigh(back_Ground_Heigh);
     }
-    
+
+    if(back_Ground_Heigh > 600 && ship.height < 40) {
+        ship = shipOriginalHeight();
+    }
+
+    if(back_Ground_Width > 1000 && ship.width < 40) {
+        ship = shipOriginalWidth();
+    }
+     
 
     ship.src = "picture/spaceship_model_1.png";
     background.src = "picture/background1.jpg";
